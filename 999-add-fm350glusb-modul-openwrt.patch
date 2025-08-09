@@ -286,7 +286,7 @@
 +  g_string_replace(s, "\"", "", -1);
 +
 +  gchar **data = g_strsplit(s->str, ",", -1);
-+  if (g_strv_length(data) < 30)
++  if (g_strv_length(data) < 20)
 +  {
 +    g_task_return_new_error(
 +        t, MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
@@ -668,10 +668,10 @@
 +static void modem_set_current_modes(MMIfaceModem *m, MMModemMode allowed, MMModemMode preferred, GAsyncReadyCallback cb, gpointer userdata);
 +static gboolean modem_set_current_modes_finish(MMIfaceModem *m, GAsyncResult *r, GError **err);
 +static void enabling_modem_init(MMBroadbandModem *m, GAsyncReadyCallback cb, gpointer userdata);
-+static void modem_3gpp_profile_manager_check_format(MMIfaceModem3gppProfileManager *pm, MMBearerIpFamily ip_type, GAsyncReadyCallback cb, gpointer userdata);
++static void modem_3gpp_profile_manager_check_format(MMIfaceModem3gppProfileManagerInterface *pm, MMBearerIpFamily ip_type, GAsyncReadyCallback cb, gpointer userdata);
 +
-+static void iface_modem_init(MMIfaceModem *pm);
-+static void iface_modem_3gpp_profile_manager_init(MMIfaceModem3gppProfileManager *pm);
++static void iface_modem_init(MMIfaceModemInterface *pm);
++static void iface_modem_3gpp_profile_manager_init(MMIfaceModem3gppProfileManagerInterface *pm);
 +
 +G_DEFINE_TYPE_EXTENDED(
 +    MMBroadbandModemFM350GL, mm_broadband_modem_fm350gl,
@@ -701,7 +701,7 @@
 +}
 +
 +static void
-+iface_modem_init(MMIfaceModem *m)
++iface_modem_init(MMIfaceModemInterface *m)
 +{
 +  m->create_bearer = modem_create_bearer;
 +  m->create_bearer_finish = modem_create_bearer_finish;
@@ -1256,7 +1256,7 @@
 +}
 +
 +static void
-+iface_modem_3gpp_profile_manager_init(MMIfaceModem3gppProfileManager *pm)
++iface_modem_3gpp_profile_manager_init(MMIfaceModem3gppProfileManagerInterface *pm)
 +{
 +  pm->check_format = modem_3gpp_profile_manager_check_format;
 +}
@@ -1322,7 +1322,7 @@
 +}
 +
 +static void
-+modem_3gpp_profile_manager_check_format(MMIfaceModem3gppProfileManager *pm,
++modem_3gpp_profile_manager_check_format(MMIfaceModem3gppProfileManagerInterface *pm,
 +                                        MMBearerIpFamily ip_type,
 +                                        GAsyncReadyCallback cb,
 +                                        gpointer userdata)
